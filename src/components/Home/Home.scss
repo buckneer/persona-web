@@ -1,0 +1,129 @@
+
+.Home {
+
+    .navbar {
+        margin: 0px 20px 20px 20px;
+
+        display: flex;
+        justify-content: space-between;
+
+        .heading {
+            margin-top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: center;
+            font-family: 'Inter';
+
+            h1 {
+                margin-bottom: 0px;
+                margin-top: 0;
+                font-weight: 900;
+                color: #f55e7a;
+            }
+
+            p {
+                margin-top: 0px;
+                color: #a9a4a4;
+                font-weight: 700;
+            }
+        }
+
+        .nav-items {
+            .item-container {
+
+                list-style-type: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: row;
+                .icon {
+                    width: auto;
+                    height: auto;
+                    border: 1px solid #06bafa;
+                    border-radius: 100%;
+                    padding: 5px 7px;
+                    color: #06bafa
+                }
+                .item {
+                    width: auto;
+                    height: auto;
+                    font-family: "Inter";
+                    font-weight: bolder;
+                    cursor: pointer;
+                    user-select: none;
+                    padding: 5px 7px;
+                    color: #06bafa;
+                    transition:  .2s;
+
+                    &:hover {
+                        opacity: .5;
+                    }
+                }
+            }
+        }
+    }
+
+    .filter {
+
+        .filter-items {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            list-style: none;
+            gap: 20px;
+            font-family: "Inter";
+            font-weight: bolder;
+            color: #3b49df;
+            flex-direction: row;
+
+            button {
+                border: 0;
+                padding: 10px 20px;
+                cursor: pointer;
+                user-select: none;
+                transition: .2s;
+                border-radius: 10px;
+
+                &:hover {
+                    background-color: #3b49df;
+                    color: #fff !important;
+                }
+            }
+
+            .active {
+                background-color: #3b49df;
+                color: #fff !important;
+            }
+        }
+    }
+
+    .tests {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+
+    .test-item-enter {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    .test-item-enter-active {
+        opacity: 1;
+        transform: translateY(0);
+        transition: all 500ms ease-out;
+    }
+
+    .test-item-exit {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .test-item-exit-active {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 500ms ease-out;
+    }
+}

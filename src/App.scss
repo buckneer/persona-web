@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+
+.App {
+  
+    .button {
+        padding: 10px 20px;
+        cursor: pointer;
+        user-select: none;
+        border-radius: 10px;
+        
+        font-family: "Inter";
+        text-transform: uppercase;
+        font-weight: bolder;
+        transition: .1s;
+
+       
+        &:active {
+            box-shadow: none;
+            transform: translate(-5px, 5px);
+        }
+
+
+    }
+
+   .primary {
+        background-color: #fff;
+        box-shadow: -5px 5px 0px rgba($color: #fff, $alpha: .5);
+        color: #000;
+    }
+
+    .secondary {
+        // background: linear-gradient(90deg, #a18dd1 0%, #f5bfe8 100%);
+        background-color: #a18dd1;
+        box-shadow: -5px 5px 0px rgba($color: #a18dd1, $alpha: .5);
+        color: #fff;
+    }
+} 

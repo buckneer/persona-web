@@ -1,0 +1,97 @@
+
+
+.Name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+
+    .sample {
+        margin-bottom: 20px;
+        font-family: "Inter";
+        font-weight: 900;
+        max-width: 50%;
+    }
+
+    .field-container {
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+        gap: 10px;
+
+        input {
+            
+            width: 100%;
+            border-radius: 5px;
+            background: rgb(249, 250, 250);
+            border: 1px solid rgb(181, 189, 196);
+            font-size: 16px;
+            height: 40px;
+            line-height: 24px;
+            padding: 7px 8px;
+            color: rgb(8, 9, 10);
+            box-shadow: none;
+            :focus{
+                background-color: #fff;
+                border-color: #3b49df;
+                box-shadow: 1px 1px 0 #3b49df;
+            }
+            
+            
+        }
+
+        .colors-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            
+            .color {
+                border: 0px solid transparent;
+                box-sizing: border-box;
+                width: 50px;
+                height: 50px;
+                border-radius: 10px;
+            }
+
+            .active {
+                border: 5px solid #5551ff;
+            }
+
+            .red {
+                background: linear-gradient(90deg, rgba(237,110,160,1) 0%, rgba(237,140,107,1) 100%);
+            }
+
+            .blue {
+                background: linear-gradient(90deg, #5770ec 0%, #08bafe 100%);
+            }
+
+            .gray {
+                background: linear-gradient(90deg, #a18dd1 0%, #f5bfe8 100%);
+            }
+        }
+        
+    }
+
+    .buttons-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-direction: row-reverse;
+        
+        .button {
+            padding: 10px 20px;
+            cursor: pointer;
+            user-select: none;
+            background-color: #5551ff;
+            border-radius: 10px;
+            color: #FFF;
+            font-family: "Inter";
+            text-transform: uppercase;
+            font-weight: bolder;
+        }
+    }
+}

@@ -1,0 +1,28 @@
+
+
+.Dimensions {
+
+
+  .box-container {
+
+    .heading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 900;
+      font-family: "Inter";
+      color: #f35f7d;
+      text-transform: uppercase;
+    }
+
+    width: 50%;
+    margin: 0 auto;
+  }
+
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+}

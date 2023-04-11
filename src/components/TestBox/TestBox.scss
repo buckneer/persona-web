@@ -1,0 +1,90 @@
+.red {
+    background: linear-gradient(90deg, rgba(237,110,160,1) 0%, rgba(237,140,107,1) 100%);
+}
+
+.blue {
+    background: linear-gradient(90deg, #5770ec 0%, #08bafe 100%);
+}
+
+.gray {
+    background: linear-gradient(90deg, #a18dd1 0%, #f5bfe8 100%);
+}
+
+
+.TestBox {
+    
+    border-radius: 15px;
+    margin: 50px 50px 0 50px;
+
+    
+    user-select: none;
+    cursor: pointer;
+    transition: ease .2s;
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row-reverse;
+        align-items: end;
+    }
+
+    .image-box {
+        width: 50%;
+        height: auto;
+        position: aboslute;
+        transform: translateY(-80px);
+    }
+
+    .text-wrapper {
+        font-family: "Inter";
+        padding: 20px;
+        p {
+            margin: 0;
+            color: rgba($color: #fff, $alpha: .7);
+        }
+        h1 {
+            color: #FFF;
+            font-weight: 800;
+            margin: 0
+        }
+    }
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+.EmptyTextBox {
+    padding: 20px;
+    border-radius: 15px;
+    border: 5px solid #777;
+    border-style: dashed;
+    box-sizing: border-box;
+    margin: 50px 50px 0 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    font-family: "Inter";
+    color: #777;
+    cursor: pointer;
+    transition: ease .2s;
+
+    .icon-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .icon-container {
+            display: flex;
+            background-color: #5770ec;
+            color: #FFF;
+            padding: 20px;
+            border-radius: 100%;
+        }
+    }
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}

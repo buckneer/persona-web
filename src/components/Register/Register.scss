@@ -1,0 +1,69 @@
+
+.Register {
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .container {
+        width: 50%;
+        margin: 150px auto;
+        background: linear-gradient(90deg, #5770ec 0%, #08bafe 100%);
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        box-shadow: -10px 8px 0px rgba($color: #5770ec, $alpha: .5);    
+    }
+
+    .heading {
+        font-family: "Inter";
+        font-weight: bolder;
+        display: flex;
+        justify-content: center;
+        color: #fff;
+        
+    }
+
+    .register-form {
+        margin: 0 auto;
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        flex-direction: column;
+
+        input {
+            width: 100%;
+            
+            border-radius: 5px;
+            background: rgb(249, 250, 250);
+            border: 1px solid rgb(181, 189, 196);
+            font-size: 16px;
+            height: 40px;
+            line-height: 24px;
+            padding: 7px 8px;
+            color: rgb(8, 9, 10);
+            box-shadow: none;
+            :focus{
+                background-color: #fff;
+                border-color: #3b49df;
+                box-shadow: 1px 1px 0 #3b49df;
+            }
+            
+        }
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        padding: 20px;
+    
+
+    }
+
+
+
+}
