@@ -10,6 +10,7 @@ import Test from './components/Test/Test';
 import {Dimensions} from "./components/CreateTest/Dimensions/Dimensions";
 import TestResults from "./components/CreateTest/TestResults/TestResults";
 import Results from "./components/Results/Results";
+import LocalHome from "./LocalHome/LocalHome";
 
 function App() {
   return (
@@ -17,15 +18,9 @@ function App() {
       <BrowserRouter>
 
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/new' element={<Name />} />
-          <Route path='/new/questions/:docId' element={<CreateTest />} />
-          <Route path='/new/dimensions/:docId' element={<Dimensions />} />
-          <Route path='/new/results/:docId' element={<TestResults />} />
+          <Route path='/' element={<LocalHome />} />
           <Route path='/test/results' element={<Results />} />
-          <Route path='/login' element={<Login />} />
-          <Route path="/test/:docId" element={<Test />} />
-          <Route path='/register' element={<Register />} />
+          <Route path="/test" element={<Test />} />
         </Routes>
       </BrowserRouter>
 

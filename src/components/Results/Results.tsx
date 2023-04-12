@@ -1,10 +1,8 @@
 import "./Results.scss";
-import bg from "../../assets/bg.jpg";
 import {useLocation} from "react-router-dom";
-import {collection, getDoc, getDocs, query, where} from "firebase/firestore";
-import {firestore} from "../../firebase/config";
-import {useEffect, useState} from "react";
-import {DimensionDoc, Scale} from "../../@types/test.type";
+import {getKeys} from "../../data/data";
+import {Dimension, Scale} from "../../data/types";
+import {useState} from "react";
 
 type ScaleResult = {
 	scale: string,
@@ -17,84 +15,53 @@ function Results() {
 	const location = useLocation();
 
 	const answers = location.state?.answers;
-	const docId = location.state?.docId;
-	const [scale, setScale] = useState<Scale[]>([]);
-	const [results, setResults] = useState<ScaleResult[]>([]);
-	const [resultLetter, setResultLetter] = useState<string[]>([]);
-	const [dimen, setDimen] = useState<DimensionDoc>();
 
-	const getQuestions = () => {
+	const [letters, setLetters] = useState<string[]>([]);
 
+
+	const handleDownload = () => {
+		calculateAnswers();
 	}
 
-	const isolateQuestions = (dimensions: DimensionDoc) => {
-		dimensions.dimensions?.map(item => {
-			scale.push(...item.scales)
-			setScale(scale);
-		})
+	const allEqual = (arr: Array<number>) => arr.every(val => val === arr[0]);
+
+	const calculateLetter = (scaleSum: number[]) => {
+		if (allEqual(scaleSum)) {
+		//	handle if the scale result is equal
+		} else {
+		//	not equal ... duh
+		}
+
+		return scaleSum.indexOf(Math.max(...scaleSum));
 	}
 
-	const getDimensions = async () => {
-
-
-		const q = query(collection(firestore, "dimensions"),
-			where("testId", "==", docId))
-		// const q = query(collection(firestore, "dimensions"),
-		// 			where("testId", "==", "OKq7kdiJ39p0jNsuqe2J"))
-
-		const qDocs = await getDocs(q);
-
-		const dimensions: DimensionDoc = {
-			id: qDocs.docs[0].id, ...qDocs.docs[0].data()
-		};
-
-
-		return dimensions;
-
-	}
-
-	const handleDownload = async () => {
-
-		getDimensions().then(response => {
-			checkAnswers(response)
-		})
-
-
-	}
-
-	const checkAnswers = async (dimen: any) => {
-
-		// @ts-ignore
-		dimen?.dimensions?.map(item => {
-			let indexes = Object.keys(item)
+	const calculateAnswers = () => {
+		getKeys().map((item: Dimension) => {
 			const scaleSum: number[] = []
-			indexes.map(index => {
+			item.scales.map((scale: Scale) => {
 				let sum = 0;
-				item[index].questions.map((question: number) => {
-					if (answers[question - 1] !== undefined)
-						sum += answers[question - 1]
+				scale.questions.map((question: number) => {
+					sum += answers[question];
 				})
-				scaleSum.push(sum)
+				scaleSum.push(sum);
 			})
-			let scaleInd = scaleSum.indexOf(Math.max(...scaleSum));
-			let scaleName = item[scaleInd].name;
-			resultLetter.push(scaleName);
-			setResultLetter(resultLetter);
+			let ind = calculateLetter(scaleSum);
+			letters.push(item.scales[ind].name);
+			setLetters(letters);
 		})
-		console.log(resultLetter)
 	}
 
-	useEffect(() => {
 
 
-		// console.log(scale)
-	}, [])
 
 	return (
 		<div className="Results">
 			<div className="container">
 				<div className="result-type">
-					<h1>INTP</h1>
+					{letters && (
+						<h1>{letters.toString().replace(",","")}</h1>
+					)}
+
 				</div>
 				<div className="type-description">
 					<p>
@@ -105,7 +72,7 @@ function Results() {
 				</div>
 
 				<div className="button-container">
-					<div className="button secondary" onClick={handleDownload}>
+					<div className="dark-button" onClick={handleDownload}>
 						Skini PDF
 					</div>
 				</div>

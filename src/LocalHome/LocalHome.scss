@@ -1,0 +1,102 @@
+
+.LocalHome {
+
+  main {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .heading {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter';
+
+    h1 {
+      margin-bottom: 0px;
+      margin-top: 0;
+      font-weight: 900;
+      color: #f55e7a;
+      text-transform: uppercase;
+    }
+
+    p {
+      margin-top: 0px;
+      color: #a9a4a4;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .arrow {
+    margin-top: 100px;
+    color: #f55e7a;
+  }
+
+  .types {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h2 {
+      font-size: 4em;
+      font-family: "Inter";
+      font-weight: bolder;
+      text-transform: uppercase;
+    }
+
+    .box-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    }
+
+    .box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 10px;
+      img {
+        width: 80%;
+        height: auto;
+      }
+
+      .type-desc {
+        font-size: 20px;
+        margin-top: 20px;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-family: "Inter";
+        font-weight: bolder;
+
+        h1 {
+          margin-bottom: 0;
+        }
+        p {
+          color: #7f7f7f;
+          font-size: .9em;
+          font-family: "Montserrat", sans-serif;
+          font-weight: normal;
+          text-align: center;
+        }
+      }
+    }
+
+
+  }
+
+
+}
