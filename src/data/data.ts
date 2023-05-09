@@ -207,6 +207,12 @@ const getKeys = () : Dimension[] => {
 	return data.keys
 }
 
+const getPersonality = (name: string) : Personality => {
+	return data.personalities.filter(item => {
+		return item.name === name
+	})[0]
+}
+
 export {
 	getQuestions,
 	getPersonalities,
