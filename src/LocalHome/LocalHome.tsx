@@ -19,6 +19,7 @@ import {PersonalityType} from "../data/types";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {useNavigate} from "react-router-dom";
+import { data } from "../data/data";
 
 
 const personalities: PersonalityType[] = [
@@ -197,6 +198,10 @@ function LocalHome() {
 					</div>
 				</div>
 			))}
+
+			<div>
+				{data.personalities[0].desc}
+			</div>
 
 
 		</div>

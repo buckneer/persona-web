@@ -1,3 +1,4 @@
+import { INFJDesc } from "./templates";
 import {Dimension, Key, LocalData, Personality} from "./types";
 
 
@@ -126,20 +127,20 @@ export const data : LocalData = {
 	],
 	personalities: [
 		{
+			name: "INFJ",
+			desc: INFJDesc()
+		},
+		{ 
 			name: "INTP",
-			desc: "Loreeeem ipsum"
+			desc: INFJDesc()
 		},
 		{
 			name: "INTP",
-			desc: "Loreeeem ipsum"
+			desc: INFJDesc()
 		},
 		{
 			name: "INTP",
-			desc: "Loreeeem ipsum"
-		},
-		{
-			name: "INTP",
-			desc: "Loreeeem ipsum"
+			desc: INFJDesc()
 		},
 	],
 	keys: [

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
 import './App.scss';
 import { CreateTest } from './components/CreateTest/CreateTest';
 import Name from './components/CreateTest/Name/Name';
@@ -15,14 +15,14 @@ import LocalHome from "./LocalHome/LocalHome";
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <HashRouter>
 
         <Routes>
           <Route path='/' element={<LocalHome />} />
           <Route path='/test/results' element={<Results />} />
           <Route path="/test" element={<Test />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
 
     </div>
   );

@@ -16,7 +16,7 @@ interface Key {
 
 interface Personality {
 	name: string,
-	desc: string
+	desc: JSX.Element
 }
 
 
