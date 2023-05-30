@@ -1,4 +1,8 @@
-import { INFJDesc } from "./templates";
+import {	
+		ESFJDesc, ESFPDesc, ESTJDesc, ESTPDesc, ENFJDesc, ENFPDesc, ENTJDesc, ENTPDesc, 
+		ISFJDesc, ISFPDesc, ISTJDesc, ISTPDesc, INFJDesc, INFPDesc, INTJDesc, INTPDesc
+} from "./templates";
+
 import {Dimension, Key, LocalData, Personality} from "./types";
 
 
@@ -127,20 +131,68 @@ export const data : LocalData = {
 	],
 	personalities: [
 		{
+			name: "ESFJ",
+			desc: ESFJDesc()
+		},
+		{ 
+			name: "ESFP",
+			desc: ESFPDesc()
+		},
+		{
+			name: "ESTJ",
+			desc: ESTJDesc()
+		},
+		{
+			name: "ESTP",
+			desc: ESTPDesc()
+		},
+		{
+			name: "ENFJ",
+			desc: ENFJDesc()
+		},
+		{
+			name: "ENFP",
+			desc: ENFPDesc()
+		},
+		{
+			name: "ENTJ",
+			desc: ENTJDesc()
+		},
+		{
+			name: "ENTP",
+			desc: ENTPDesc()
+		},
+		{
+			name: "ISFJ",
+			desc: ISFJDesc()
+		},
+		{
+			name: "ISFP",
+			desc: ISFPDesc()
+		},
+		{
+			name: "ISTJ",
+			desc: ISTJDesc()
+		},
+		{
+			name: "ISTP",
+			desc: ISTPDesc()
+		},
+		{
 			name: "INFJ",
 			desc: INFJDesc()
 		},
-		{ 
-			name: "INTP",
-			desc: INFJDesc()
+		{
+			name: "INFP",
+			desc: INFPDesc()
+		},
+		{
+			name: "INTJ",
+			desc: INTJDesc()
 		},
 		{
 			name: "INTP",
-			desc: INFJDesc()
-		},
-		{
-			name: "INTP",
-			desc: INFJDesc()
+			desc: INTPDesc()
 		},
 	],
 	keys: [
@@ -171,11 +223,11 @@ export const data : LocalData = {
 		{
 			scales: [
 				{
-					name: "O",
+					name: "F",
 					questions: [2,10,18,26,34,42,50,58,66,74,82,90,98,106,114]
 				},
 				{
-					name: "M",
+					name: "T",
 					questions: [6,14,22,30,38,46,54,62,70,78,86,94,102,110,118]
 				}
 			]
@@ -183,7 +235,7 @@ export const data : LocalData = {
 		{
 			scales: [
 				{
-					name: "R",
+					name: "J",
 					questions: [3,11,19,27,35,43,51,59,67,75,83,91,99,107,115]
 				},
 				{
