@@ -30,25 +30,29 @@ const personalities: PersonalityType[] = [
 				title: "Arhitekta",
 				desc: "Maštoviti i strategijski mislioci, koji imaju plan za sve.",
 				illustration: architect,
-				type: "INTJ-A / INTJ-T"
+				type: "INTJ-A / INTJ-T",
+				link: "INTJ"
 			},
 			{
 				title: "Logičar",
 				desc: "Inovativni izumitelji sa nezasitnom željom za znanjem.",
 				illustration: logician,
-				type: "INTP-A / INTP-T"
+				type: "INTP-A / INTP-T",
+				link: "INTP"
 			},
 			{
 				title: "Komandant",
 				desc: "Neustrašivi, maštoviti lideri sa jakom voljom, koji uvek pronalaze način - ili ga stvore",
 				illustration: commander,
-				type: "ENTJ-A / ENTJ-T"
+				type: "ENTJ-A / ENTJ-T",
+				link: "ENTJ"
 			},
 			{
 				title: "Debatnik",
 				desc: "Pametni i radoznali mislioci koji ne mogu da odole intelektualnom izazovu.",
 				illustration: debater,
-				type: "ENTP-A / ENTP-T"
+				type: "ENTP-A / ENTP-T",
+				link: "ENTP"
 			},
 
 		],
@@ -62,25 +66,29 @@ const personalities: PersonalityType[] = [
 				title: "Advokat",
 				desc: "Tihi i tajanstveni, ali vrlo inspiritivni i neumorni idealisti.",
 				illustration: advocate,
-				type: "INFJ-A / INFJ-T"
+				type: "INFJ-A / INFJ-T",
+				link: "INFJ"
 			},
 			{
 				title: "Posrednik",
 				desc: "Poetični, ljubazni i altruistički ljudi, uvek rado učestvuju u dobrim delima.",
 				illustration: mediator,
-				type: "INFP-A / INFP-T"
+				type: "INFP-A / INFP-T",
+				link: "INFP"
 			},
 			{
 				title: "Protagonista",
 				desc: "Harizmatične i inspirativne vođe, u stanju da fasciniraju svoje slušaoce.",
 				illustration: protagonist,
-				type: "ENFJ-A / ENFJ-T"
+				type: "ENFJ-A / ENFJ-T",
+				link: "ENFJ"
 			},
 			{
 				title: "Aktivista",
 				desc: "Entuzijasti, kreativne i društvene osobe slobodnog duha koji uvek nađu razlog za osmeh.",
 				illustration: campaigner,
-				type: "ENFP-A / ENFP-T"
+				type: "ENFP-A / ENFP-T",
+				link: "ENFP"
 			},
 
 		],
@@ -94,25 +102,30 @@ const personalities: PersonalityType[] = [
 				title: "Logističar",
 				desc: "Praktične osobe, fokusirane na činjenice, u čiju se pouzdanost ne može sumnjati.",
 				illustration: logisctician,
-				type: "ISTJ-A / ISTJ-T"
+				type: "ISTJ-A / ISTJ-T",
+				link: "ISTJ"
+
 			},
 			{
 				title: "Branilac",
 				desc: "Veoma posvećeni i topli zaštitnici, uvek spremni da zaštite svoje voljene.",
 				illustration: defender,
-				type: "ISFJ-A / ISFJ-T"
+				type: "ISFJ-A / ISFJ-T",
+				link: "ISFJ"
 			},
 			{
 				title: "Izvršilac",
 				desc: "Odlični administratori, nenadmašni u upravljanju stvarima - ili ljudima.",
 				illustration: executive,
-				type: "ESTJ-A / ESTJ-T"
+				type: "ESTJ-A / ESTJ-T",
+				link: "ESTJ"
 			},
 			{
 				title: "Konzul",
 				desc: "Izvanredno saosećajni, društveni i popularni ljudi, uvek rado pomažu.",
 				illustration: consul,
-				type: "ESFJ-A / ESFJ-T"
+				type: "ESFJ-A / ESFJ-T",
+				link: "ESFJ"
 			},
 
 		],
@@ -126,25 +139,29 @@ const personalities: PersonalityType[] = [
 				title: "Virtuoz",
 				desc: "Neustrašivi i praktični eksperimentatori, majstori svih alata.",
 				illustration: virtuoso,
-				type: "ISTP-A / ISTP-T"
+				type: "ISTP-A / ISTP-T",
+				link: "ISTP"
 			},
 			{
 				title: "Avanturista",
 				desc: "Fleksibilni i šarmantni umetnici, uvek spremni da istražuju i dožive nešto novo.",
 				illustration: adventurer,
-				type: "ISFP-A / ISFP-T"
+				type: "ISFP-A / ISFP-T",
+				link: "ISFP"
 			},
 			{
 				title: "Preduzetnik",
 				desc: "Pametni, energični i vrlo perspektivni ljudi, koji uživaju u riskantnim poduhvatima.",
 				illustration: ent,
-				type: "ESTP-A / ESTP-T"
+				type: "ESTP-A / ESTP-T",
+				link: "ESTP"
 			},
 			{
 				title: "Zabavljač",
 				desc: "Spontani, energični i entuzijastični zabavljači - život nikad nije dosadan pored njih.",
 				illustration: entertainer,
-				type: "ESFP-A / ESFP-T"
+				type: "ESFP-A / ESFP-T",
+				link: "ESFP"
 			},
 
 		],
@@ -159,6 +176,10 @@ function LocalHome() {
 
 	const handleRedirect = () => {
 		navigate("/test")
+	}
+
+	const redirectToType = (personality: string) => {
+		navigate(`/types/${personality}`)
 	}
 
 	return (
@@ -186,7 +207,8 @@ function LocalHome() {
 					</div>
 					<div className="box-container">
 						{personality.personalities.map(item => (
-							<div className="box">
+						
+							<div onClick={() => redirectToType(item.link)} className="box">
 								<img src={item.illustration} />
 								<div className="type-desc">
 									<h1>{item.title}</h1>
@@ -194,6 +216,7 @@ function LocalHome() {
 									<p>{item.desc}</p>
 								</div>
 							</div>
+							
 						))}
 					</div>
 				</div>

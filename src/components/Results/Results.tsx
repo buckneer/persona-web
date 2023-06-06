@@ -3,6 +3,12 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {getKeys} from "../../data/data";
 import {Dimension, Scale} from "../../data/types";
 import {useEffect, useState} from "react";
+import '../../data/templates';
+import { 
+	INTPDesc, ENTPDesc, ISTPDesc, ESTPDesc, ISTJDesc, ESTJDesc,
+	INFJDesc, INFPDesc, ENFJDesc, ENFPDesc, ENTJDesc, ESFJDesc,
+	INTJDesc, ISFJDesc, ISFPDesc, ESFPDesc
+	} from "../../data/templates";
 
 type ScaleResult = {
 	scale: string,
@@ -19,22 +25,51 @@ function Results() {
 
 	const [letters, setLetters] = useState<string>();
 
-
 	const handleDownload = () => {
 		navigate("/")
 	}
 
-	const allEqual = (arr: Array<number>) => arr.every(val => val === arr[0]);
+	const allEqual = (arr: number[]) => arr.every(val => val === arr[0]);
 
-	const calculateLetter = (scaleSum: number[]) => {
-		if (allEqual(scaleSum)) {
-		//	handle if the scale result is equal
-		} else {
-		//	not equal ... duh
+	const calculateLetter = (scaleSum: number[]) => (allEqual(scaleSum)) ? -1 : scaleSum.indexOf(Math.max(...scaleSum));
+	
+	const getDescByLetters = () => {
+		switch(letters) {
+			case "INTP":
+				return <INTPDesc />
+			case "ENTP":
+				return <ENTPDesc />
+			case "ISTP":
+				return <ISTPDesc />
+			case "ESTP":
+				return <ESTPDesc />
+			case "ISTJ":
+				return <ISTJDesc />
+			case "ESTJ":
+				return <ESTJDesc />
+			case "INFP":
+				return <INFPDesc />
+			case "ENFJ":
+				return <ENFJDesc />
+			case "INFJ":
+				return <INFJDesc />
+			case "ENFP":
+				return <ENFPDesc />
+			case "INTJ":
+				return <INTJDesc />
+			case "ISFJ":
+				return <ISFJDesc />
+			case "ISFP":
+				return <ISFPDesc />
+			case "ESFPDesc":
+				return <ESFPDesc />
+			case "ENTJ":
+				return <ENTJDesc />
+			case "ESFJDesc":
+				return <ESFJDesc />
+			
 		}
-
-		return scaleSum.indexOf(Math.max(...scaleSum));
-	}
+	} 
 
 	const calculateAnswers = async () => {
 		let results : string[] = []
@@ -48,8 +83,12 @@ function Results() {
 				scaleSum.push(sum);
 			})
 			let ind = calculateLetter(scaleSum);
-			results.push(item.scales[ind].name);
-
+			
+			if(ind == -1) {
+				results.push('X');
+			} else {
+				results.push(item.scales[ind].name);
+			}
 		})
 
 		return results;
@@ -59,6 +98,21 @@ function Results() {
 	useEffect(() => {
 		calculateAnswers().then(response => {
 			setLetters(response.join(""));
+			
+			// response.forEach((elem, i)=> {
+			// 	if(elem === 'X') { // jbg ni ovo nije skalabilno :shrug:
+			// 		if(i === 0) {
+			// 			setLinks(links?.concat(['I', 'E']));
+			// 		} else if (i === 1) {
+			// 			setLinks(links?.concat(['N', 'S'])); 
+			// 		} else if (i === 2) {
+			// 			setLinks(links?.concat(['T', 'F']));
+			// 		} else {
+			// 			setLinks(links?.concat(['P', 'J']));
+			// 		}
+			// 	}
+			// })
+
 		})
 	});
 
@@ -74,7 +128,13 @@ function Results() {
 				</div>
 				<div className="type-description">
 					<p>
+						{!letters?.includes('X') && getDescByLetters()}
+					</p>
+				</div>
 
+				<div className="type-description">
+					<p>
+						
 					</p>
 				</div>
 
@@ -83,6 +143,7 @@ function Results() {
 						Idi na početak
 					</div>
 				</div>
+
 			</div>
 
 		</div>

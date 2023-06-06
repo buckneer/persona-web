@@ -38,7 +38,8 @@ interface PersonalityItem {
 	title: string,
 	type: string
 	desc: string,
-	illustration: string
+	illustration: string,
+	link: string
 }
 
 export type {
