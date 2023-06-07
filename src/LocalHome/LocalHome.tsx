@@ -207,7 +207,7 @@ function LocalHome() {
 					</div>
 					<div className="box-container">
 						{personality.personalities.map(item => (
-						
+
 							<div onClick={() => redirectToType(item.link)} className="box">
 								<img src={item.illustration} />
 								<div className="type-desc">
@@ -216,15 +216,11 @@ function LocalHome() {
 									<p>{item.desc}</p>
 								</div>
 							</div>
-							
+
 						))}
 					</div>
 				</div>
 			))}
-
-			<div>
-				{data.personalities[0].desc}
-			</div>
 
 
 		</div>

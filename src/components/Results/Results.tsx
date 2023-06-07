@@ -23,7 +23,11 @@ function Results() {
 	const answers = location.state?.answers;
 
 	const [letters, setLetters] = useState<string>();
-	const [x, setX] = useState<any>([]);
+	const [x, setX] = useState<string[]>();
+	const [displayX, setDisplayX] = useState(false);
+
+	const [element, setElement] = useState("");
+	const [loading, setLoading] = useState(true);
 
 	const handleDownload = () => {
 		navigate("/")
@@ -33,8 +37,8 @@ function Results() {
 
 	const calculateLetter = (scaleSum: number[]) => (allEqual(scaleSum)) ? -1 : scaleSum.indexOf(Math.max(...scaleSum));
 
-	const getDescByLetters = (letter = letters) => {
-		switch (letter) {
+	const getDescByLetters = (manLetters = letters) => {
+		switch (manLetters) {
 			case "INTP":
 				return <INTPDesc />
 			case "ENTP":
@@ -61,11 +65,11 @@ function Results() {
 				return <ISFJDesc />
 			case "ISFP":
 				return <ISFPDesc />
-			case "ESFPDesc":
+			case "ESFP":
 				return <ESFPDesc />
 			case "ENTJ":
 				return <ENTJDesc />
-			case "ESFJDesc":
+			case "ESFJ":
 				return <ESFJDesc />
 
 		}
@@ -94,43 +98,70 @@ function Results() {
 		return results;
 	}
 
-	const getAllCombs = (input: any, output: any, position: any = 0, path: any = []) => {
-    if (position < input.length) {
-        let item = input[position];
-        for (let i = 0; i < item.length; ++i) {
-            var value = item[i];
-            path.push(value);
-            getAllCombs(input, output, position + 1, path);
-            path.pop();
-        }
-    } else {
-      	output.push(path.slice());
-    }
-};
+	async function generateCombinations(arr : any) {
+		const combinations: any = [];
+
+		async function helper(currentCombo: any, remainingArrays: any) {
+			if (remainingArrays.length === 0) {
+				combinations.push(currentCombo);
+			} else {
+				const currentArray = remainingArrays[0];
+				for (const element of currentArray) {
+					await helper([...currentCombo, element], remainingArrays.slice(1));
+				}
+			}
+		}
+
+		await helper([], arr);
+		return combinations;
+	}
+
+
+	const handleExes = () => {
+		setDisplayX(true);
+	}
 
 
 	useEffect(() => {
+		setLoading(true)
+		console.log("Use effect")
 		calculateAnswers().then(response => {
-			setLetters(response.join(""));
+			let res = response.join("");
+			setLetters(res);
 
-			if (letters?.includes("X")) {
+			if (res.includes("X")) {
+				console.log("Running")
 				let compsToConsider = [];
 				let combinations = [['I', 'E'], ['N', 'S'], ['F', 'T'], ['P', 'J']];
 
 				for (let i = 0; i < combinations.length; i++) {
-					(letters.charAt(i) === 'X') ? compsToConsider.push(combinations[i]) : compsToConsider.push([letters.charAt(i)]);
+					(res.charAt(i) === 'X') ? compsToConsider.push(combinations[i]) : compsToConsider.push([res.charAt(i)]);
 				}
+				generateCombinations(compsToConsider)
+					.then(result => {
+						setX(result)
+						console.log(result);
+						setLoading(false); // Set loading to false once letters are retrieved
+					});
 
-				let resultArrayCombs: any = [];
 
-				getAllCombs(compsToConsider, resultArrayCombs);
 
-				setX(resultArrayCombs);
-
+			} else {
+				setLoading(false); // Set loading to false once letters are retrieved
 			}
 
+
+
 		})
-	});
+	}, []);
+
+
+
+
+	if (loading) {
+		return <div>Loading...</div>;
+	}
+
 
 	function replaceAt(originalString: string, index: number, replacement: string) {
 		return originalString.substring(0, index) + replacement + originalString.substring(index + replacement.length);
@@ -143,32 +174,35 @@ function Results() {
 					{letters && (
 						<h1>{letters}</h1>
 					)}
-
 				</div>
 				<div className="type-description">
 					<p>
 						{!letters?.includes('X') && getDescByLetters()}
 					</p>
-					{letters?.includes("X") && (
+				</div>
+				<div className="hasX">
+
+					{letters && letters?.includes("X") && (
 						<div className="choose-type">
-							{x.map(function(item: any) {
-								return (
-									<div className="dark-button" key={item.join('')}>
-										{item.join('')}
-									</div>
+							{x?.map(function(item: any) {
+									return (
+										<div className="dark-button" key={item.join('')} onClick={() => setElement(item.join(""))}>
+											{item.join('')}
+										</div>
 									)
-							}
+								}
 							)}
 						</div>
 					)}
 				</div>
 
-				<div className="type-description">
-
-					
-				</div>
-
+				{element && (
+					<div className="type-description">
+						{getDescByLetters(element)}
+					</div>
+				)}
 				<div className="button-container">
+
 					<div className="dark-button" onClick={handleDownload}>
 						Idi na početak
 					</div>
