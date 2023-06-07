@@ -21,6 +21,7 @@
       text-transform: uppercase;
     }
 
+
     .result-type {
       font-family: "Inter";
       font-weight: bolder;
@@ -41,7 +42,14 @@
     .choose-type {
       display: grid;
       gap: 20px;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .chart-container {
+    }
+
+    .button-container {
+      gap: 20px;
     }
   }
 }

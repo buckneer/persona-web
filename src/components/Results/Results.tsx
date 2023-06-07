@@ -9,6 +9,7 @@ import {
 	INFJDesc, INFPDesc, ENFJDesc, ENFPDesc, ENTJDesc, ESFJDesc,
 	INTJDesc, ISFJDesc, ISFPDesc, ESFPDesc
 } from "../../data/templates";
+import Chart from "../Chart/Chart";
 
 type ScaleResult = {
 	scale: string,
@@ -25,12 +26,17 @@ function Results() {
 	const [letters, setLetters] = useState<string>();
 	const [x, setX] = useState<string[]>();
 	const [displayX, setDisplayX] = useState(false);
+	const [scaleRes, setScaleRes] = useState({'I': 0, 'E': 0, 'S': 0, 'N': 0, 'F': 0, 'T': 0, 'J': 0, 'P': 0});
 
 	const [element, setElement] = useState("");
-	const [loading, setLoading] = useState(true);
 
 	const handleDownload = () => {
 		navigate("/")
+	}
+
+
+	const handlePDF = () => {
+		window.print();
 	}
 
 	const allEqual = (arr: number[]) => arr.every(val => val === arr[0]);
@@ -85,6 +91,9 @@ function Results() {
 					sum += answers[question - 1];
 				})
 				scaleSum.push(sum);
+				let currentScale: any = scaleRes;
+				currentScale[scale.name] = sum;
+				setScaleRes(currentScale);
 			})
 			let ind = calculateLetter(scaleSum);
 
@@ -94,6 +103,7 @@ function Results() {
 				results.push(item.scales[ind].name);
 			}
 		})
+
 
 		return results;
 	}
@@ -123,7 +133,7 @@ function Results() {
 
 
 	useEffect(() => {
-		setLoading(true)
+
 		console.log("Use effect")
 		calculateAnswers().then(response => {
 			let res = response.join("");
@@ -141,13 +151,13 @@ function Results() {
 					.then(result => {
 						setX(result)
 						console.log(result);
-						setLoading(false); // Set loading to false once letters are retrieved
+
 					});
 
 
 
 			} else {
-				setLoading(false); // Set loading to false once letters are retrieved
+
 			}
 
 
@@ -157,10 +167,6 @@ function Results() {
 
 
 
-
-	if (loading) {
-		return <div>Loading...</div>;
-	}
 
 
 	function replaceAt(originalString: string, index: number, replacement: string) {
@@ -206,8 +212,17 @@ function Results() {
 					<div className="dark-button" onClick={handleDownload}>
 						Idi na početak
 					</div>
+
+					<div className="dark-button" onClick={handlePDF}>
+						Preuzmi PDF
+					</div>
 				</div>
 
+
+			</div>
+
+			<div className="chart-container">
+				<Chart dataset={scaleRes}  />
 			</div>
 
 		</div>

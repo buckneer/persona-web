@@ -11,17 +11,22 @@ import {Dimensions} from "./components/CreateTest/Dimensions/Dimensions";
 import TestResults from "./components/CreateTest/TestResults/TestResults";
 import Results from "./components/Results/Results";
 import LocalHome from "./LocalHome/LocalHome";
+import TypeDisplay from "./components/TypeDisplay/TypeDisplay";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <div className="App">
-      <HashRouter>
 
-        <Routes>
-          <Route path='/' element={<LocalHome />} />
-          <Route path='/test/results' element={<Results />} />
-          <Route path="/test" element={<Test />} />
-        </Routes>
+      <HashRouter>
+        <ScrollToTop>
+          <Routes>
+            <Route path='/' element={<LocalHome />} />
+            <Route path='/test/results' element={<Results />} />
+            <Route path="/test" element={<Test />} />
+            <Route path="/types/:type" element={<TypeDisplay />} />
+          </Routes>
+        </ScrollToTop>
       </HashRouter>
 
     </div>
