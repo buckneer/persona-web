@@ -1,20 +1,19 @@
 import "./Results.scss";
-import {useLocation, useNavigate} from "react-router-dom";
-import {getKeys} from "../../data/data";
-import {Dimension, Scale} from "../../data/types";
-import {useEffect, useState} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getKeys } from "../../data/data";
+import { Dimension, Scale } from "../../data/types";
+import { useEffect, useState } from "react";
 import '../../data/templates';
 import {
 	INTPDesc, ENTPDesc, ISTPDesc, ESTPDesc, ISTJDesc, ESTJDesc,
 	INFJDesc, INFPDesc, ENFJDesc, ENFPDesc, ENTJDesc, ESFJDesc,
 	INTJDesc, ISFJDesc, ISFPDesc, ESFPDesc
-	} from "../../data/templates";
+} from "../../data/templates";
 
 type ScaleResult = {
 	scale: string,
 	totalPoints: number
 }
-
 
 function Results() {
 
@@ -24,7 +23,7 @@ function Results() {
 	const answers = location.state?.answers;
 
 	const [letters, setLetters] = useState<string>();
-	const [x, setX] = useState<string[]>([]);
+	const [x, setX] = useState<any>([]);
 
 	const handleDownload = () => {
 		navigate("/")
@@ -34,8 +33,8 @@ function Results() {
 
 	const calculateLetter = (scaleSum: number[]) => (allEqual(scaleSum)) ? -1 : scaleSum.indexOf(Math.max(...scaleSum));
 
-	const getDescByLetters = () => {
-		switch(letters) {
+	const getDescByLetters = (letter = letters) => {
+		switch (letter) {
 			case "INTP":
 				return <INTPDesc />
 			case "ENTP":
@@ -73,7 +72,7 @@ function Results() {
 	}
 
 	const calculateAnswers = async () => {
-		let results : string[] = []
+		let results: string[] = []
 		getKeys().map((item: Dimension) => {
 			const scaleSum: number[] = []
 			item.scales.map((scale: Scale) => {
@@ -85,7 +84,7 @@ function Results() {
 			})
 			let ind = calculateLetter(scaleSum);
 
-			if(ind == -1) {
+			if (ind === -1) {
 				results.push('X');
 			} else {
 				results.push(item.scales[ind].name);
@@ -95,58 +94,47 @@ function Results() {
 		return results;
 	}
 
+	const getAllCombs = (input: any, output: any, position: any = 0, path: any = []) => {
+    if (position < input.length) {
+        let item = input[position];
+        for (let i = 0; i < item.length; ++i) {
+            var value = item[i];
+            path.push(value);
+            getAllCombs(input, output, position + 1, path);
+            path.pop();
+        }
+    } else {
+      	output.push(path.slice());
+    }
+};
+
 
 	useEffect(() => {
 		calculateAnswers().then(response => {
 			setLetters(response.join(""));
 
-			// letters.forEach((elem, i)=> {
-			// 	if(elem === 'X') { // jbg ni ovo nije skalabilno :shrug:
-			// 		if(i === 0) {
-			// 			setLinks(links?.concat(['I', 'E']));
-			// 		} else if (i === 1) {
-			// 			setLinks(links?.concat(['N', 'S']));
-			// 		} else if (i === 2) {
-			// 			setLinks(links?.concat(['T', 'F']));
-			// 		} else {
-			// 			setLinks(links?.concat(['P', 'J']));
-			// 		}
-			// 	}
-			// })
-
 			if (letters?.includes("X")) {
-				let letter = letters?.indexOf("X");
+				let compsToConsider = [];
+				let combinations = [['I', 'E'], ['N', 'S'], ['F', 'T'], ['P', 'J']];
 
-				switch (letter){
-					case 0:
-						setX(["I", "E"])
-						break;
-					case 1:
-						setX(["I", "E"])
-						break;
-					case 2:
-						setX(["I", "E"])
-						break;
-					case 3:
-						setX(["I", "E"])
-						break;
+				for (let i = 0; i < combinations.length; i++) {
+					(letters.charAt(i) === 'X') ? compsToConsider.push(combinations[i]) : compsToConsider.push([letters.charAt(i)]);
 				}
 
+				let resultArrayCombs: any = [];
 
-				setLetters(prevState => prevState?.replace("X", x.join(" ili ")))
+				getAllCombs(compsToConsider, resultArrayCombs);
+
+				setX(resultArrayCombs);
+
 			}
 
 		})
 	});
 
-	function replaceAt(originalString: string, index : number, replacement: string) {
+	function replaceAt(originalString: string, index: number, replacement: string) {
 		return originalString.substring(0, index) + replacement + originalString.substring(index + replacement.length);
 	}
-
-	const setSelected = (letter: string) => {
-		setLetters(prevState => replaceAt(prevState!, prevState!.indexOf("X"), letter))
-	}
-
 
 	return (
 		<div className="Results">
@@ -163,19 +151,21 @@ function Results() {
 					</p>
 					{letters?.includes("X") && (
 						<div className="choose-type">
-							{x.map(item => (
-								<div className="dark-button" onClick={() => setSelected(item)}>
-									{item}
-								</div>
-							))}
+							{x.map(function(item: any) {
+								return (
+									<div className="dark-button" key={item.join('')}>
+										{item.join('')}
+									</div>
+									)
+							}
+							)}
 						</div>
 					)}
 				</div>
 
 				<div className="type-description">
-					<p>
 
-					</p>
+					
 				</div>
 
 				<div className="button-container">
