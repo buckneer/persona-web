@@ -4,7 +4,7 @@ import {getKeys} from "../../data/data";
 import {Dimension, Scale} from "../../data/types";
 import {useEffect, useState} from "react";
 import '../../data/templates';
-import { 
+import {
 	INTPDesc, ENTPDesc, ISTPDesc, ESTPDesc, ISTJDesc, ESTJDesc,
 	INFJDesc, INFPDesc, ENFJDesc, ENFPDesc, ENTJDesc, ESFJDesc,
 	INTJDesc, ISFJDesc, ISFPDesc, ESFPDesc
@@ -24,6 +24,7 @@ function Results() {
 	const answers = location.state?.answers;
 
 	const [letters, setLetters] = useState<string>();
+	const [x, setX] = useState<string[]>([]);
 
 	const handleDownload = () => {
 		navigate("/")
@@ -32,7 +33,7 @@ function Results() {
 	const allEqual = (arr: number[]) => arr.every(val => val === arr[0]);
 
 	const calculateLetter = (scaleSum: number[]) => (allEqual(scaleSum)) ? -1 : scaleSum.indexOf(Math.max(...scaleSum));
-	
+
 	const getDescByLetters = () => {
 		switch(letters) {
 			case "INTP":
@@ -67,9 +68,9 @@ function Results() {
 				return <ENTJDesc />
 			case "ESFJDesc":
 				return <ESFJDesc />
-			
+
 		}
-	} 
+	}
 
 	const calculateAnswers = async () => {
 		let results : string[] = []
@@ -83,7 +84,7 @@ function Results() {
 				scaleSum.push(sum);
 			})
 			let ind = calculateLetter(scaleSum);
-			
+
 			if(ind == -1) {
 				results.push('X');
 			} else {
@@ -98,13 +99,13 @@ function Results() {
 	useEffect(() => {
 		calculateAnswers().then(response => {
 			setLetters(response.join(""));
-			
-			// response.forEach((elem, i)=> {
+
+			// letters.forEach((elem, i)=> {
 			// 	if(elem === 'X') { // jbg ni ovo nije skalabilno :shrug:
 			// 		if(i === 0) {
 			// 			setLinks(links?.concat(['I', 'E']));
 			// 		} else if (i === 1) {
-			// 			setLinks(links?.concat(['N', 'S'])); 
+			// 			setLinks(links?.concat(['N', 'S']));
 			// 		} else if (i === 2) {
 			// 			setLinks(links?.concat(['T', 'F']));
 			// 		} else {
@@ -113,8 +114,38 @@ function Results() {
 			// 	}
 			// })
 
+			if (letters?.includes("X")) {
+				let letter = letters?.indexOf("X");
+
+				switch (letter){
+					case 0:
+						setX(["I", "E"])
+						break;
+					case 1:
+						setX(["I", "E"])
+						break;
+					case 2:
+						setX(["I", "E"])
+						break;
+					case 3:
+						setX(["I", "E"])
+						break;
+				}
+
+
+				setLetters(prevState => prevState?.replace("X", x.join(" ili ")))
+			}
+
 		})
 	});
+
+	function replaceAt(originalString: string, index : number, replacement: string) {
+		return originalString.substring(0, index) + replacement + originalString.substring(index + replacement.length);
+	}
+
+	const setSelected = (letter: string) => {
+		setLetters(prevState => replaceAt(prevState!, prevState!.indexOf("X"), letter))
+	}
 
 
 	return (
@@ -130,11 +161,20 @@ function Results() {
 					<p>
 						{!letters?.includes('X') && getDescByLetters()}
 					</p>
+					{letters?.includes("X") && (
+						<div className="choose-type">
+							{x.map(item => (
+								<div className="dark-button" onClick={() => setSelected(item)}>
+									{item}
+								</div>
+							))}
+						</div>
+					)}
 				</div>
 
 				<div className="type-description">
 					<p>
-						
+
 					</p>
 				</div>
 
