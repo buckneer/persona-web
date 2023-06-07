@@ -1,20 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Montserrat:wght@400;700;900&display=swap');
 
 
-.App {
-  
+  .App {
+
     .button {
         padding: 10px 20px;
         cursor: pointer;
         user-select: none;
         border-radius: 10px;
-        
+
         font-family: "Inter";
         text-transform: uppercase;
         font-weight: bolder;
         transition: .1s;
 
-       
+
         &:active {
             box-shadow: none;
             transform: translate(-5px, 5px);
@@ -35,4 +36,51 @@
         box-shadow: -5px 5px 0px rgba($color: #a18dd1, $alpha: .5);
         color: #fff;
     }
-} 
+
+  .red {
+    // background: linear-gradient(90deg, #a18dd1 0%, #f5bfe8 100%);
+    background-color: #f55e7a;
+    box-shadow: -5px 5px 0px rgba($color: #f55e7a, $alpha: .5);
+    color: #fff;
+  }
+
+    .dark-button {
+
+      outline: 0;
+      grid-gap: 8px;
+      align-items: center;
+      background: 0 0;
+      border: 1px solid #f55e7a;
+      border-radius: 4px;
+      color: #f55e7a;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: "Montserrat", sans-serif;
+      display: inline-flex;
+      flex-shrink: 0;
+      font-size: 16px;
+      gap: 8px;
+      justify-content: center;
+      line-height: 1.5;
+      overflow: hidden;
+      padding: 12px 16px;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      transition: all .14s ease-out;
+      white-space: nowrap;
+      &:hover {
+        box-shadow: 4px 4px 0 #f55e7a;
+        transform: translate(-4px,-4px);
+      }
+
+      &:focus-visible{
+        outline-offset: 1px;
+      }
+
+      &:active {
+        box-shadow: none;
+        transform: translate(0);
+      }
+
+    }
+}

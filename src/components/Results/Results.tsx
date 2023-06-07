@@ -1,114 +1,228 @@
 import "./Results.scss";
-import bg from "../../assets/bg.jpg";
-import {useLocation} from "react-router-dom";
-import {collection, getDoc, getDocs, query, where} from "firebase/firestore";
-import {firestore} from "../../firebase/config";
-import {useEffect, useState} from "react";
-import {DimensionDoc, Scale} from "../../@types/test.type";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getKeys } from "../../data/data";
+import { Dimension, Scale } from "../../data/types";
+import { useEffect, useState } from "react";
+import '../../data/templates';
+import {
+	INTPDesc, ENTPDesc, ISTPDesc, ESTPDesc, ISTJDesc, ESTJDesc,
+	INFJDesc, INFPDesc, ENFJDesc, ENFPDesc, ENTJDesc, ESFJDesc,
+	INTJDesc, ISFJDesc, ISFPDesc, ESFPDesc
+} from "../../data/templates";
+import Chart from "../Chart/Chart";
 
 type ScaleResult = {
 	scale: string,
 	totalPoints: number
 }
 
-
 function Results() {
 
 	const location = useLocation();
+	const navigate = useNavigate();
 
 	const answers = location.state?.answers;
-	const docId = location.state?.docId;
-	const [scale, setScale] = useState<Scale[]>([]);
-	const [results, setResults] = useState<ScaleResult[]>([]);
-	const [resultLetter, setResultLetter] = useState<string[]>([]);
-	const [dimen, setDimen] = useState<DimensionDoc>();
 
-	const getQuestions = () => {
+	const [letters, setLetters] = useState<string>();
+	const [x, setX] = useState<string[]>();
+	const [displayX, setDisplayX] = useState(false);
+	const [scaleRes, setScaleRes] = useState({'I': 0, 'E': 0, 'S': 0, 'N': 0, 'F': 0, 'T': 0, 'J': 0, 'P': 0});
 
+	const [element, setElement] = useState("");
+
+	const handleDownload = () => {
+		navigate("/")
 	}
 
-	const isolateQuestions = (dimensions: DimensionDoc) => {
-		dimensions.dimensions?.map(item => {
-			scale.push(...item.scales)
-			setScale(scale);
-		})
+
+	const handlePDF = () => {
+		window.print();
 	}
 
-	const getDimensions = async () => {
+	const allEqual = (arr: number[]) => arr.every(val => val === arr[0]);
 
+	const calculateLetter = (scaleSum: number[]) => (allEqual(scaleSum)) ? -1 : scaleSum.indexOf(Math.max(...scaleSum));
 
-		const q = query(collection(firestore, "dimensions"),
-			where("testId", "==", docId))
-		// const q = query(collection(firestore, "dimensions"),
-		// 			where("testId", "==", "OKq7kdiJ39p0jNsuqe2J"))
+	const getDescByLetters = (manLetters = letters) => {
+		switch (manLetters) {
+			case "INTP":
+				return <INTPDesc />
+			case "ENTP":
+				return <ENTPDesc />
+			case "ISTP":
+				return <ISTPDesc />
+			case "ESTP":
+				return <ESTPDesc />
+			case "ISTJ":
+				return <ISTJDesc />
+			case "ESTJ":
+				return <ESTJDesc />
+			case "INFP":
+				return <INFPDesc />
+			case "ENFJ":
+				return <ENFJDesc />
+			case "INFJ":
+				return <INFJDesc />
+			case "ENFP":
+				return <ENFPDesc />
+			case "INTJ":
+				return <INTJDesc />
+			case "ISFJ":
+				return <ISFJDesc />
+			case "ISFP":
+				return <ISFPDesc />
+			case "ESFP":
+				return <ESFPDesc />
+			case "ENTJ":
+				return <ENTJDesc />
+			case "ESFJ":
+				return <ESFJDesc />
 
-		const qDocs = await getDocs(q);
-
-		const dimensions: DimensionDoc = {
-			id: qDocs.docs[0].id, ...qDocs.docs[0].data()
-		};
-
-
-		return dimensions;
-
+		}
 	}
 
-	const handleDownload = async () => {
-
-		getDimensions().then(response => {
-			checkAnswers(response)
-		})
-
-
-	}
-
-	const checkAnswers = async (dimen: any) => {
-
-		// @ts-ignore
-		dimen?.dimensions?.map(item => {
-			let indexes = Object.keys(item)
+	const calculateAnswers = async () => {
+		let results: string[] = []
+		getKeys().map((item: Dimension) => {
 			const scaleSum: number[] = []
-			indexes.map(index => {
+			item.scales.map((scale: Scale) => {
 				let sum = 0;
-				item[index].questions.map((question: number) => {
-					if (answers[question - 1] !== undefined)
-						sum += answers[question - 1]
+				scale.questions.map((question: number) => {
+					sum += answers[question - 1];
 				})
-				scaleSum.push(sum)
+				scaleSum.push(sum);
+				let currentScale: any = scaleRes;
+				currentScale[scale.name] = sum;
+				setScaleRes(currentScale);
 			})
-			let scaleInd = scaleSum.indexOf(Math.max(...scaleSum));
-			let scaleName = item[scaleInd].name;
-			resultLetter.push(scaleName);
-			setResultLetter(resultLetter);
+			let ind = calculateLetter(scaleSum);
+
+			if (ind === -1) {
+				results.push('X');
+			} else {
+				results.push(item.scales[ind].name);
+			}
 		})
-		console.log(resultLetter)
+
+
+		return results;
 	}
+
+	async function generateCombinations(arr : any) {
+		const combinations: any = [];
+
+		async function helper(currentCombo: any, remainingArrays: any) {
+			if (remainingArrays.length === 0) {
+				combinations.push(currentCombo);
+			} else {
+				const currentArray = remainingArrays[0];
+				for (const element of currentArray) {
+					await helper([...currentCombo, element], remainingArrays.slice(1));
+				}
+			}
+		}
+
+		await helper([], arr);
+		return combinations;
+	}
+
+
+	const handleExes = () => {
+		setDisplayX(true);
+	}
+
 
 	useEffect(() => {
 
+		console.log("Use effect")
+		calculateAnswers().then(response => {
+			let res = response.join("");
+			setLetters(res);
 
-		// console.log(scale)
-	}, [])
+			if (res.includes("X")) {
+				console.log("Running")
+				let compsToConsider = [];
+				let combinations = [['I', 'E'], ['N', 'S'], ['F', 'T'], ['P', 'J']];
+
+				for (let i = 0; i < combinations.length; i++) {
+					(res.charAt(i) === 'X') ? compsToConsider.push(combinations[i]) : compsToConsider.push([res.charAt(i)]);
+				}
+				generateCombinations(compsToConsider)
+					.then(result => {
+						setX(result)
+						console.log(result);
+
+					});
+
+
+
+			} else {
+
+			}
+
+
+
+		})
+	}, []);
+
+
+
+
+
+	function replaceAt(originalString: string, index: number, replacement: string) {
+		return originalString.substring(0, index) + replacement + originalString.substring(index + replacement.length);
+	}
 
 	return (
 		<div className="Results">
 			<div className="container">
 				<div className="result-type">
-					<h1>INTP</h1>
+					{letters && (
+						<h1>{letters}</h1>
+					)}
 				</div>
 				<div className="type-description">
 					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et iaculis urna, eu sodales sem. Curabitur ut ipsum risus. Aenean interdum justo ex, ultricies porttitor dolor rhoncus eget. Aenean ut fringilla enim. Cras ut mi in est efficitur tempor at nec eros. Vivamus et eleifend neque, vel ornare ligula. Vivamus id nulla in nunc aliquet vehicula facilisis dictum quam. Cras sagittis lobortis mi, et tempor mauris rutrum malesuada. Curabitur mollis arcu et nisl rutrum, eget cursus risus ultricies. Integer vehicula elit sed mi faucibus, vel fermentum orci lobortis. Suspendisse tincidunt gravida nisl non hendrerit. Sed tristique sit amet odio a iaculis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec fringilla varius accumsan. Pellentesque nisi diam, facilisis id felis sed, facilisis elementum risus. Pellentesque scelerisque non ligula et laoreet.
-
-						Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed in mauris sollicitudin, ornare eros iaculis, porta libero. Duis id egestas nibh. Sed ut imperdiet nisi, in ultricies ligula. Maecenas in quam quam. Curabitur dapibus commodo risus in congue. Donec quis varius purus, ut tempus turpis. Suspendisse potenti. Suspendisse maximus turpis vel sapien semper bibendum.
+						{!letters?.includes('X') && getDescByLetters()}
 					</p>
 				</div>
+				<div className="hasX">
 
+					{letters && letters?.includes("X") && (
+						<div className="choose-type">
+							{x?.map(function(item: any) {
+									return (
+										<div className="dark-button" key={item.join('')} onClick={() => setElement(item.join(""))}>
+											{item.join('')}
+										</div>
+									)
+								}
+							)}
+						</div>
+					)}
+				</div>
+
+				{element && (
+					<div className="type-description">
+						{getDescByLetters(element)}
+					</div>
+				)}
 				<div className="button-container">
-					<div className="button secondary" onClick={handleDownload}>
-						Skini PDF
+
+					<div className="dark-button" onClick={handleDownload}>
+						Idi na početak
+					</div>
+
+					<div className="dark-button" onClick={handlePDF}>
+						Preuzmi PDF
 					</div>
 				</div>
+
+
+			</div>
+
+			<div className="chart-container">
+				<Chart dataset={scaleRes}  />
 			</div>
 
 		</div>
